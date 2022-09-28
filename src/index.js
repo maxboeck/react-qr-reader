@@ -117,10 +117,10 @@ module.exports = class Reader extends Component {
             this.worker.terminate()
             this.worker = undefined
         }
+        this.shouldStop = true
         this.clearComponent()
     }
     clearComponent() {
-        this.shouldStop = true
         // Remove all event listeners and variables
         if (this.timeout) {
             clearTimeout(this.timeout)
