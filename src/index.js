@@ -120,6 +120,7 @@ module.exports = class Reader extends Component {
         this.clearComponent()
     }
     clearComponent() {
+        this.shouldStop = true
         // Remove all event listeners and variables
         if (this.timeout) {
             clearTimeout(this.timeout)
@@ -178,6 +179,14 @@ module.exports = class Reader extends Component {
     handleVideo(stream) {
         const { preview } = this.els
         const { facingMode } = this.props
+
+        // Stop stream if we've been asked to
+        if (this.shouldStop) {
+            const streamTrackToStop = stream.getTracks()[0]
+            setTimeout(() => {
+                streamTrackToStop.stop()
+            }, 2000)
+        }
 
         // Preview element hasn't been rendered so wait for it.
         if (!preview) {
@@ -278,24 +287,28 @@ module.exports = class Reader extends Component {
             preview && preview.readyState === preview.HAVE_ENOUGH_DATA
 
         if (legacyMode || previewIsPlaying) {
-            const ctx = canvas.getContext('2d')
+            try {
+                const ctx = canvas.getContext('2d')
 
-            ctx.drawImage(
-                legacyMode ? img : preview,
-                hozOffset,
-                vertOffset,
-                width,
-                height
-            )
+                ctx.drawImage(
+                    legacyMode ? img : preview,
+                    hozOffset,
+                    vertOffset,
+                    width,
+                    height
+                )
 
-            const imageData = ctx.getImageData(
-                0,
-                0,
-                canvas.width,
-                canvas.height
-            )
-            // Send data to web-worker
-            this.worker.postMessage(imageData)
+                const imageData = ctx.getImageData(
+                    0,
+                    0,
+                    canvas.width,
+                    canvas.height
+                )
+                // Send data to web-worker
+                this.worker.postMessage(imageData)
+            } catch (err) {
+                console.error('Error while processing scanner data', err)
+            }
         } else {
             // Preview not ready -> check later
             this.timeout = setTimeout(this.check, delay)
