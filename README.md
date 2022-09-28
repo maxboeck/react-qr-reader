@@ -6,7 +6,7 @@ A [React](https://facebook.github.io/react/) component for reading QR codes from
 
 ## A Note about the JodusNodus Repo
 
-This repositorys goal is to be an updated version of the project at https://github.com/JodusNodus/react-qr-reader.  That project appears dead, yet it still seems to generate a lot of traffic and interest.  Rather than let it die, I have moved the codebase to here and welcome anyone who made pull requests to the original to do so here, and let's get this project back up and running with the fixes that it needs.
+This repositorys goal is to be an updated version of the project at https://github.com/JodusNodus/react-qr-reader. That project appears dead, yet it still seems to generate a lot of traffic and interest. Rather than let it die, I have moved the codebase to here and welcome anyone who made pull requests to the original to do so here, and let's get this project back up and running with the fixes that it needs.
 
 ## Demo
 
@@ -16,10 +16,10 @@ Note: This demo link will be removed or updated once this project has split suff
 
 ## Known Issues
 
-* Server side rendering won't work so only require the component when rendering in a browser environment.
-* Due to browser implementations the camera can only be accessed over https or localhost.
-* In Firefox a prompt will be shown to the user asking which camera to use, so `facingMode` will not affect it.
-* On IOS 11 it is only supported on Safari and not on Chrome or Firefox due to Apple making the API not available to 3rd party browsers.
+-   Server side rendering won't work so only require the component when rendering in a browser environment.
+-   Due to browser implementations the camera can only be accessed over https or localhost.
+-   In Firefox a prompt will be shown to the user asking which camera to use, so `facingMode` will not affect it.
+-   On IOS 11 it is only supported on Safari and not on Chrome or Firefox due to Apple making the API not available to 3rd party browsers.
 
 ## Install
 
@@ -32,45 +32,44 @@ import React, { Component } from 'react'
 import QrReader from 'modern-react-qr-reader'
 
 class Test extends Component {
-  constructor(props) {
-        super(props);
+    constructor(props) {
+        super(props)
 
         this.state = {
             result: 'No result'
         }
 
-        this.handleError = this.handleError.bind(this);
-        this.handleScan = this.handleScan.bind(this);
+        this.handleError = this.handleError.bind(this)
+        this.handleScan = this.handleScan.bind(this)
     }
 
-  handleScan = data => {
-    if (data) {
-      this.state.result = data;
-        console.log(this.state.result);
-        this.setState({result: data});
+    handleScan = (data) => {
+        if (data) {
+            this.state.result = data
+            console.log(this.state.result)
+            this.setState({ result: data })
+        }
     }
-  }
-  
-  handleError = err => {
-    console.error(err)
-  }
-  
-  render() {
-    return (
-      <div>
-        <QrReader
-          delay={300}
-          facingMode={"environment"}
-          onError={this.handleError}
-          onScan={this.handleScan}
-          style={{ width: '100%' }}
-        />
-        <p>{this.state.result}</p>
-      </div>
-    )
-  }
+
+    handleError = (err) => {
+        console.error(err)
+    }
+
+    render() {
+        return (
+            <div>
+                <QrReader
+                    delay={300}
+                    facingMode={'environment'}
+                    onError={this.handleError}
+                    onScan={this.handleScan}
+                    style={{ width: '100%' }}
+                />
+                <p>{this.state.result}</p>
+            </div>
+        )
+    }
 }
-
 ```
 
 ## Props
@@ -94,7 +93,7 @@ class Test extends Component {
 | style          | a valid React style     | none          | Styling for the container element. **Warning** The preview will always keep its 1:1 aspect ratio.                                                                                                                                                                                                                                                                          |
 | className      | string                  | none          | ClassName for the container element.                                                                                                                                                                                                                                                                                                                                       |
 | showViewFinder | boolean                 | `true`        | Show or hide the build in view finder. See demo                                                                                                                                                                                                                                                                                                                            |
-| constraints    | object                  | `null`          | Use custom camera constraints that the override default behavior. [MediaTrackConstraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints)                                                                                                                                                                                                                                                                                                                            |
+| constraints    | object                  | `null`        | Use custom camera constraints that the override default behavior. [MediaTrackConstraints](https://developer.mozilla.org/en-US/docs/Web/API/MediaTrackConstraints)                                                                                                                                                                                                          |
 | legacyMode     | boolean                 | `false`       | If the device does not allow camera access (e.g. IOS Browsers, Safari) you can enable legacyMode to allow the user to take a picture (On a mobile device) or use an existing one. To trigger the image dialog just call the method `openImageDialog` from the parent component. **Warning** You must call the method from a user action (eg. click event on some element). |
 
 ## Dev
@@ -117,9 +116,9 @@ class Test extends Component {
 
 ## Tested platforms
 
-* Chrome macOs & Android
-* Firefox macOs & Android
-* Safari macOs & IOS
+-   Chrome macOs & Android
+-   Firefox macOs & Android
+-   Safari macOs & IOS
 
 ## License
 
