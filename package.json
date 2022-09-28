@@ -48,11 +48,11 @@
     "react-dom": "^16.8.3"
   },
   "peerDependencies": {
-    "react": "~16",
-    "react-dom": "~16"
+    "react": "^16.8.0 || ^17.0.0",
+    "react-dom": "^16.8.0 || ^17.0.0"
   },
   "dependencies": {
-    "jsqr": "^1.2.0",
+    "jsqr": "^1.4.0",
     "prop-types": "^15.7.2",
     "webrtc-adapter": "^7.2.1"
   }
