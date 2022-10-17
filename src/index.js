@@ -288,7 +288,9 @@ module.exports = class Reader extends Component {
 
         if (legacyMode || previewIsPlaying) {
             try {
-                const ctx = canvas.getContext('2d')
+                const ctx = canvas.getContext('2d', {
+                    willReadFrequently: true
+                })
 
                 ctx.drawImage(
                     legacyMode ? img : preview,
