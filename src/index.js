@@ -55,6 +55,7 @@ module.exports = class Reader extends Component {
         this.initiateLegacyMode = this.initiateLegacyMode.bind(this)
         this.check = this.check.bind(this)
         this.handleVideo = this.handleVideo.bind(this)
+        this.handleStreamError = this.handleStreamError.bind(this)
         this.handleLoadStart = this.handleLoadStart.bind(this)
         this.handleInputChange = this.handleInputChange.bind(this)
         this.clearComponent = this.clearComponent.bind(this)
@@ -137,7 +138,7 @@ module.exports = class Reader extends Component {
         }
     }
     initiate(props = this.props) {
-        const { onError, facingMode, cameraId } = props
+        const { facingMode, cameraId } = props
         let supported = {}
 
         // Check browser facingMode constraint support
@@ -152,10 +153,6 @@ module.exports = class Reader extends Component {
             supported = navigator.mediaDevices.getSupportedConstraints()
         }
         const constraints = {}
-
-        if (this.stopCamera) {
-            this.stopCamera()
-        }
 
         if (supported.facingMode) {
             constraints.facingMode = { ideal: facingMode }
@@ -174,7 +171,7 @@ module.exports = class Reader extends Component {
             vConstraintsPromise
                 .then((video) => navigator.mediaDevices.getUserMedia({ video }))
                 .then(this.handleVideo)
-                .catch(onError)
+                .catch(this.handleStreamError)
         } else {
             console.error('browser does not support "navigator.mediaDevices"')
         }
@@ -226,6 +223,20 @@ module.exports = class Reader extends Component {
             streamLabel: streamTrack.label
         })
     }
+
+    handleStreamError(err) {
+        const { onError } = this.props
+        if (
+            err.name === 'NotReadableError' &&
+            typeof this.stopCamera === 'function'
+        ) {
+            this.stopCamera()
+            this.initiate()
+        } else {
+            onError(err)
+        }
+    }
+
     handleLoadStart() {
         const { delay, onLoad } = this.props
         const { mirrorVideo, streamLabel } = this.state
