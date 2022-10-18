@@ -153,6 +153,10 @@ module.exports = class Reader extends Component {
         }
         const constraints = {}
 
+        if (this.stopCamera) {
+            this.stopCamera()
+        }
+
         if (supported.facingMode) {
             constraints.facingMode = { ideal: facingMode }
         }
@@ -212,9 +216,7 @@ module.exports = class Reader extends Component {
         const streamTrack = stream.getTracks()[0]
         // Assign `stopCamera` so the track can be stopped once component is cleared
         this.stopCamera = () => {
-            setTimeout(() => {
-                streamTrack.stop()
-            }, 2000)
+            streamTrack.stop()
         }
 
         preview.addEventListener('loadstart', this.handleLoadStart)
