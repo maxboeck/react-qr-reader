@@ -245,17 +245,26 @@ module.exports = class Reader extends Component {
         const { legacyMode, resolution, delay } = this.props
         const { preview, canvas, img } = this.els
 
-        // Get image/video dimensions
-        let width = Math.floor(
-            legacyMode ? img.naturalWidth : preview.videoWidth
-        )
-        let height = Math.floor(
-            legacyMode ? img.naturalHeight : preview.videoHeight
-        )
+        // Default Dimensions
+        let width = 640
+        let height = 640
 
         // Canvas draw offsets
         let hozOffset = 0
         let vertOffset = 0
+
+        const previewIsPlaying =
+            preview && preview.readyState === preview.HAVE_ENOUGH_DATA
+
+        // Get image/video dimensions
+        if (legacyMode || previewIsPlaying) {
+            width = Math.floor(
+                legacyMode ? img.naturalWidth : preview.videoWidth
+            )
+            height = Math.floor(
+                legacyMode ? img.naturalHeight : preview.videoHeight
+            )
+        }
 
         // Scale image to correct resolution
         if (legacyMode) {
@@ -282,9 +291,6 @@ module.exports = class Reader extends Component {
             canvas.width = resolution
             canvas.height = resolution
         }
-
-        const previewIsPlaying =
-            preview && preview.readyState === preview.HAVE_ENOUGH_DATA
 
         if (legacyMode || previewIsPlaying) {
             try {
