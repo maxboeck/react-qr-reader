@@ -269,6 +269,13 @@ module.exports = class Reader extends Component {
         const previewIsPlaying =
             preview && preview.readyState === preview.HAVE_ENOUGH_DATA
 
+        const setCanvasDimensions = (w, h) => {
+            if (canvas) {
+                canvas.width = w
+                canvas.height = h
+            }
+        }
+
         // Get image/video dimensions
         if (legacyMode || previewIsPlaying) {
             width = Math.floor(
@@ -288,8 +295,7 @@ module.exports = class Reader extends Component {
             height = ratio * height
             width = ratio * width
 
-            canvas.width = width
-            canvas.height = height
+            setCanvasDimensions(width, height)
         } else {
             // Crop image to fit 1:1 aspect ratio
             const smallestSize = width < height ? width : height
@@ -301,8 +307,7 @@ module.exports = class Reader extends Component {
             vertOffset = ((height - resolution) / 2) * -1
             hozOffset = ((width - resolution) / 2) * -1
 
-            canvas.width = resolution
-            canvas.height = resolution
+            setCanvasDimensions(resolution, resolution)
         }
 
         if (legacyMode || previewIsPlaying) {
